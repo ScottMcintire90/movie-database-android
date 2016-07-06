@@ -22,7 +22,10 @@ import okhttp3.Response;
 
 public class MovieResultsActivity extends AppCompatActivity {
     public static final String TAG = MainActivity.class.getSimpleName();
-    public ArrayList<String> titleArray =  new ArrayList<String>();
+
+    public ArrayList<Movie> mMovies =  new ArrayList<>();
+    private MovieListAdapter mAdapter;
+    @Bind(R.id.recyclerView) RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +51,23 @@ public class MovieResultsActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                mMovies = movieService.processResults(response);
 
-                try {
-                    String jsonData = response.body().string();
-                    Log.v(TAG, jsonData);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
+                for (int i = 0; i < mMovies.size(); i++) {
+                    Log.v("response", "" + mMovies);
+                    mMovies.get(i).getId();
+                    Log.v("tag", "" + mMovies.get(i).getId());
                 }
+                MovieResultsActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAdapter = new MovieListAdapter(getApplicationContext(), mMovies);
+                        mRecyclerView.setAdapter(mAdapter);
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MovieResultsActivity.this);
+                        mRecyclerView.setLayoutManager(layoutManager);
+                        mRecyclerView.setHasFixedSize(true);
+                    }
+                });
             }
         });
     }
