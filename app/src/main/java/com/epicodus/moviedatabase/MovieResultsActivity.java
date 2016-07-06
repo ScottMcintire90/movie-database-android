@@ -34,15 +34,16 @@ public class MovieResultsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        String title = intent.getStringExtra("title");
+        String query = intent.getStringExtra("query");
         String searchType = intent.getStringExtra("searchType");
-        Log.v(TAG, title);
-        getMovie(title, searchType);
+        Log.v(TAG, searchType);
+        getMovie(query, searchType);
     }
 
-    private void getMovie(String title, String searchType) {
+
+    private void getMovie(String query, String searchType) {
         final MovieService movieService = new MovieService();
-        movieService.getMovie(title, searchType, new Callback() {
+        movieService.getMovie(query, searchType, new Callback() {
 
             @Override
             public void onFailure(Call call, IOException e) {
@@ -71,5 +72,38 @@ public class MovieResultsActivity extends AppCompatActivity {
             }
         });
     }
+
+
+//    private void getActor(String query, String searchType) {
+//        final MovieService movieService = new MovieService();
+//        movieService.getMovie(query, searchType, new Callback() {
+//
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                mMovies = movieService.processActorResults(response);
+//
+//                for (int i = 0; i < mMovies.size(); i++) {
+//                    Log.v("response", "" + mMovies);
+//                    mMovies.get(i).getId();
+//                    Log.v("tag", "" + mMovies.get(i).getId());
+//                }
+//                MovieResultsActivity.this.runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mAdapter = new MovieListAdapter(getApplicationContext(), mMovies);
+//                        mRecyclerView.setAdapter(mAdapter);
+//                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MovieResultsActivity.this);
+//                        mRecyclerView.setLayoutManager(layoutManager);
+//                        mRecyclerView.setHasFixedSize(true);
+//                    }
+//                });
+//            }
+//        });
+//    }
 }
 

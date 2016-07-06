@@ -31,7 +31,7 @@ public class MovieService {
         urlBuilder.addQueryParameter("query", title);
         urlBuilder.addQueryParameter("api_key", Constants.MOVIE_API_KEY);
         String url = urlBuilder.build().toString();
-
+        Log.v("url", url);
         Request request= new Request.Builder()
                 .url(url)
                 .build();
@@ -40,11 +40,12 @@ public class MovieService {
         call.enqueue(callback);
     }
 
+
     public ArrayList<Movie> processResults(Response response){
         ArrayList<Movie> movies = new ArrayList<>();
-
         try{
             String jsonData = response.body().string();
+            Log.v("json", jsonData);
             if(response.isSuccessful()){
                 JSONObject resultsJSON = new JSONObject(jsonData);
                 JSONArray moviesJSON = resultsJSON.getJSONArray("results");
@@ -63,13 +64,55 @@ public class MovieService {
                         Date date = formatter.parse(year);
                         dateString = formatter.format(date);
                     } catch (Exception e){
-                        Log.d("no", "no");
                     }
-                    Log.d("log", dateString);
                     Movie movie = new Movie(id,title,overview, "cast", imageURL, genre,rating, dateString);
                     movies.add(movie);
+                }
+            }
+        }
 
+        catch(IOException e){
+            e.printStackTrace();
+        }
+        catch(JSONException e){
+            e.printStackTrace();
+        } return movies;
+    }
 
+    public ArrayList<Movie> processActorResults(Response response){
+        ArrayList<Movie> movies = new ArrayList<>();
+
+        try{
+            String jsonData = response.body().string();
+            Log.v("json", jsonData);
+            if(response.isSuccessful()){
+                JSONObject resultsJSON = new JSONObject(jsonData);
+                JSONArray moviesJSON = resultsJSON.getJSONArray("results");
+                JSONObject actorObject = moviesJSON.getJSONObject(0);
+                JSONArray knownForArray = actorObject.getJSONArray("known_for");
+
+                for (int i=0; i < moviesJSON.length(); i++) {
+                    JSONObject test = moviesJSON.getJSONObject(i);
+                }
+
+                for(int i=0; i < knownForArray.length(); i++){
+                    JSONObject movieJSON = knownForArray.getJSONObject(i);
+                    String title = movieJSON.getString("title");
+                    String year = movieJSON.getString("release_date");
+                    int id = movieJSON.getInt("id");
+                    String genre = movieJSON.getJSONArray("genre_ids").getString(0);
+                    double rating = movieJSON.getDouble("vote_average");
+                    String overview = movieJSON.getString("overview");
+                    String imageURL = movieJSON.getString("poster_path");
+                    DateFormat formatter = new SimpleDateFormat("y");
+                    String dateString = "";
+                    try{
+                        Date date = formatter.parse(year);
+                        dateString = formatter.format(date);
+                    } catch (Exception e){
+                    }
+                    Movie movie = new Movie(id,title,overview, "cast", imageURL, genre,rating, dateString);
+                    movies.add(movie);
                 }
             }
         }

@@ -3,15 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context="com.epicodus.moviedatabase.MainActivity">
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/imageView"
+        android:src="@drawable/background"
+        android:scaleType="centerCrop"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Search for a movie"
+        android:text="DroidFlix"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textSize="30dp"
+        android:textColor="#FFF"
+        android:textStyle="bold"
+        android:id="@+id/textView" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -20,7 +32,9 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:width="300dp"
-        android:hint="...Movie Title..."
+        android:textColorHint="#FFF"
+        android:textColor="#FFF"
+        android:hint="Enter Movie Title"
         android:gravity="center"
         android:textSize="26dp" />
 
@@ -32,4 +46,15 @@
         android:layout_below="@+id/movieQuery"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="56dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="actors"
+        android:id="@+id/actorButton"
+        android:layout_marginTop="37dp"
+        android:layout_below="@+id/queryButton"
+        android:layout_alignLeft="@+id/queryButton"
+        android:layout_alignStart="@+id/queryButton" />
+
 </RelativeLayout>

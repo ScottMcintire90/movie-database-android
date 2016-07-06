@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     @Bind(R.id.queryButton) Button mQueryButton;
     @Bind(R.id.movieQuery) EditText mMovieQuery;
+    @Bind(R.id.actorButton) Button mActorButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,15 +22,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
 
         mQueryButton.setOnClickListener(this);
+        mActorButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         if(v == mQueryButton) {
-            String title = mMovieQuery.getText().toString();
+            String query = mMovieQuery.getText().toString();
             Intent intent = new Intent(MainActivity.this, MovieResultsActivity.class);
-            intent.putExtra("title", title);
+            intent.putExtra("query", query);
             intent.putExtra("searchType", "movie");
+            startActivity(intent);
+        }
+        if (v == mActorButton) {
+            String query = mMovieQuery.getText().toString();
+            Intent intent = new Intent(MainActivity.this, MovieResultsActivity.class);
+            intent.putExtra("query", query);
+            intent.putExtra("searchType", "person");
             startActivity(intent);
         }
     }
